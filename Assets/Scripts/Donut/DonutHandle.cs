@@ -10,9 +10,6 @@ public class DonutHandle : MonoBehaviour
     private int _currentDonutHp;
     private bool _isDonutDestroyed;
     
-    [Header("Reword")]
-    public GameObject coinPrefab;
-    
     
     private void Awake()
     {
@@ -26,12 +23,14 @@ public class DonutHandle : MonoBehaviour
     }
 
 
-    public void OnClickedDonut()
+    public void OnClickedDonut() // 도넛 클릭시 실행
     {
         if (_isDonutDestroyed) return;
         
-        StartAnimation("Click", true);
         _currentDonutHp--;
+        
+        AudioManager.Instance.DOPlaySfx(Audios.CookieClick);
+        StartAnimation("Click", true);
         
         if (_currentDonutHp <= 0)
         {
@@ -45,7 +44,7 @@ public class DonutHandle : MonoBehaviour
     }
 
 
-    private void CheckBonusCoinCycle()
+    private void CheckBonusCoinCycle() // donutInfo.autoClickedCycle 회 클릭시 마다 보너스 코인 생성
     {
         if (_currentDonutHp % donutInfo.autoClickedCycle == 0)
         {
@@ -54,12 +53,11 @@ public class DonutHandle : MonoBehaviour
     }
 
 
-    private void GiveReward(int quantity)
+    private void GiveReward(int quantity) // 코인 생성
     {
         for (int i = 0; i < quantity; i++)
         {
-            Instantiate(coinPrefab, transform.position, Quaternion.identity);
-            // 오브젝트 풀링으로 개선
+            ObjectPool.Instance.GetObject();
         }
     }
 
@@ -74,13 +72,14 @@ public class DonutHandle : MonoBehaviour
     
     public void OnDestroyDonut() // animation event
     {
+        AudioManager.Instance.DOPlaySfx(Audios.CookieDestroy);
         GiveReward(donutInfo.rewardCoinQuantity);
         NotifyDestroyed();
         Destroy(this.gameObject);
     }
     
 
-    private void NotifyDestroyed()
+    private void NotifyDestroyed() // 게임 매니저에 알려주어 새로운 도넛 생성
     {
         // 일정 시간 지난 후 새로운 도넛 생성
         // 카운트 올려주기
