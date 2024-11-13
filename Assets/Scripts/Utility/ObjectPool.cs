@@ -12,7 +12,7 @@ public class ObjectPool : ConvertSingleton<ObjectPool>
     [SerializeField] private int _initialPoolSize = 10;
     [SerializeField] private int _maxSize = 20;
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         _pool = new ObjectPool<GameObject>(CreatePooledItem, OnGetObject, OnReleaseObject, OnDestroyObject, true, _initialPoolSize, _maxSize);
