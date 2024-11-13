@@ -24,7 +24,7 @@ public class UICoinView : MonoBehaviour
         {
             _presenter.AddCoin();
 
-            if (other.gameObject.TryGetComponent<ReleaseObject>(out ReleaseObject releaseObject))
+            if (other.gameObject.TryGetComponent<ReleaseObjectCoin>(out ReleaseObjectCoin releaseObject))
             {
                 releaseObject.ReturnObject();
             }

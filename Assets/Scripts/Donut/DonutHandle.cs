@@ -34,6 +34,7 @@ public class DonutHandle : MonoBehaviour
         
         if (_currentDonutHp <= 0)
         {
+            ObjectPool.Instance.GetDonutObject();
             StartAnimation("Destroy", true);
             _isDonutDestroyed = true;
         }
@@ -57,7 +58,7 @@ public class DonutHandle : MonoBehaviour
     {
         for (int i = 0; i < quantity; i++)
         {
-            ObjectPool.Instance.GetObject();
+            ObjectPool.Instance.GetCoinObject();
         }
     }
 
