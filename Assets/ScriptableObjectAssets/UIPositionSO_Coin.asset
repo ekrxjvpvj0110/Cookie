@@ -9,10 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 692a09a49df553b4793f5e41d061dbe0, type: 3}
-  m_Name: DontSO_DefaultDonut
+  m_Script: {fileID: 11500000, guid: 5eeae6ead4c901a4d82cc1c12728bd72, type: 3}
+  m_Name: UIPositionSO_Coin
   m_EditorClassIdentifier: 
-  donutHp: 1
-  autoClickedCycle: 5
-  rewardCoinQuantity: 10
-  bonusCoinQuantity: 2
+  positon: {x: 1.5, y: 4, z: 0}
