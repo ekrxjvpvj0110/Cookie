@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-public class ReleaseObject : MonoBehaviour
+public class ReleaseObjectDonut : MonoBehaviour
 {
     private ObjectPool _objectPool;
 
@@ -14,6 +14,6 @@ public class ReleaseObject : MonoBehaviour
     
     public void ReturnObject()
     {
-        _objectPool.ReleaseObject(gameObject);
+        _objectPool.ReleaseDonutObject(gameObject);
     }
 }

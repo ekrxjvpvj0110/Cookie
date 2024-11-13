@@ -6,33 +6,47 @@ using UnityEngine.Pool;
 
 public class ObjectPool : ConvertSingleton<ObjectPool>
 {
-    [SerializeField] private GameObject _prefabs;
-    private IObjectPool<GameObject> _pool;
-    
+    [SerializeField] private GameObject _coinPrefabs;
+    private IObjectPool<GameObject> _coinPool;
+
+    [SerializeField] private GameObject _donutPrefabs;
+    private IObjectPool<GameObject> _donutPool;
+
     [SerializeField] private int _initialPoolSize = 10;
     [SerializeField] private int _maxSize = 20;
 
     protected override void Awake()
     {
         base.Awake();
-        _pool = new ObjectPool<GameObject>(CreatePooledItem, OnGetObject, OnReleaseObject, OnDestroyObject, true, _initialPoolSize, _maxSize);
+        _coinPool = new ObjectPool<GameObject>(() => CreatePooledItem(_coinPrefabs), OnGetObject, OnReleaseObject, OnDestroyObject, true, _initialPoolSize, _maxSize);
+        _donutPool = new ObjectPool<GameObject>(() => CreatePooledItem(_donutPrefabs), OnGetObject, OnReleaseObject, OnDestroyObject, true, _initialPoolSize, _maxSize);
     }
 
-
-    private GameObject CreatePooledItem()
+    #region Unity에서 처리
+    
+    private GameObject CreatePooledItem(GameObject prefab)
     {
-        GameObject obj = Instantiate(_prefabs);
-        
-        obj.GetComponent<ReleaseObject>().SetPool(this);
-        return obj;
-    }
+        GameObject obj = Instantiate(prefab);
 
+        if (obj.TryGetComponent<ReleaseObjectCoin>(out ReleaseObjectCoin releaseObjectCoin))
+        {
+            releaseObjectCoin.SetPool(this);
+            return obj;
+        }
+
+        if (obj.TryGetComponent<ReleaseObjectDonut>(out ReleaseObjectDonut releaseObjectDonut))
+        {
+            releaseObjectDonut.SetPool(this);
+            return obj;
+        }
+
+        return null;
+    }
 
     private void OnGetObject(GameObject obj) // 풀에서 알아서 활성화
     {
         obj.SetActive(true);
     }
-
 
     private void OnReleaseObject(GameObject obj) // 풀에서 알아서 반환
     {
@@ -41,21 +55,33 @@ public class ObjectPool : ConvertSingleton<ObjectPool>
         obj.SetActive(false);
     }
 
-
     private void OnDestroyObject(GameObject obj) // 풀에서 제거
     {
         Destroy(obj);
     }
+    #endregion
+    
 
-
-    public GameObject GetObject() // 사용자가 오브젝트 활성화
+    
+    public GameObject GetCoinObject() // 코인을 풀에서 가져옴
     {
-        return _pool.Get();
+        return _coinPool.Get();
     }
 
-
-    public void ReleaseObject(GameObject obj) // 사용자가 오브젝트 반환
+    
+    public GameObject GetDonutObject() // 도넛을 풀에서 가져옴
     {
-        _pool.Release(obj);
+        return _donutPool.Get();
+    }
+
+    
+    public void ReleaseCoinObject(GameObject obj) // 코인을 반환
+    {
+        _coinPool.Release(obj);
+    }
+
+    public void ReleaseDonutObject(GameObject obj) // 도넛을 반환
+    {
+        _donutPool.Release(obj);
     }
 }
