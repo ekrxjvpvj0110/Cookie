@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -22,7 +20,7 @@ public class ObjectPool : ConvertSingleton<ObjectPool>
         _donutPool = new ObjectPool<GameObject>(() => CreatePooledItem(_donutPrefabs), OnGetObject, OnReleaseObject, OnDestroyObject, true, _initialPoolSize, _maxSize);
     }
 
-    #region Unity에서 처리
+    #region 전처리
     
     private GameObject CreatePooledItem(GameObject prefab)
     {
@@ -49,9 +47,7 @@ public class ObjectPool : ConvertSingleton<ObjectPool>
     }
 
     private void OnReleaseObject(GameObject obj) // 풀에서 알아서 반환
-    {
-        obj.transform.position = Vector3.zero;
-        obj.transform.rotation = Quaternion.identity;
+    {   
         obj.SetActive(false);
     }
 
@@ -77,11 +73,13 @@ public class ObjectPool : ConvertSingleton<ObjectPool>
     
     public void ReleaseCoinObject(GameObject obj) // 코인을 반환
     {
+        obj.gameObject.transform.position = new Vector3(0,0,0);
         _coinPool.Release(obj);
     }
 
     public void ReleaseDonutObject(GameObject obj) // 도넛을 반환
     {
+        obj.gameObject.transform.position = new Vector3(0,0,0);
         _donutPool.Release(obj);
     }
 }
