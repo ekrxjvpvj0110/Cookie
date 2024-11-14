@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 692a09a49df553b4793f5e41d061dbe0, type: 3}
   m_Name: DontSO_DefaultDonut
   m_EditorClassIdentifier: 
-  donutHp: 1
+  donutHp: 15
   autoClickedCycle: 5
   rewardCoinQuantity: 10
   bonusCoinQuantity: 2

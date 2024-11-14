@@ -1,18 +1,35 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+
+public class GameManager : ConvertSingleton<GameManager>
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject donutPrefab;
+    private readonly float _waitTime = 1.5f;
+    
+    protected override void Awake()
     {
-        
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    private void Start()
     {
-        
+        Instantiate(donutPrefab, Vector3.zero, Quaternion.identity);
+    }
+
+
+    public void MakeDonut()
+    {
+        StartCoroutine(MakeDonuts());
+    }
+
+
+    private IEnumerator MakeDonuts() 
+    {
+        yield return new WaitForSeconds(_waitTime);
+        Instantiate(donutPrefab, Vector3.zero, Quaternion.identity);
     }
 }

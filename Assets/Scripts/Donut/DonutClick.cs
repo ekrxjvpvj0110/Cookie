@@ -20,5 +20,6 @@ public class DonutClick : MonoBehaviour
     private void OnClickDonut()
     {
         _donutHandle.OnClickedDonut();
+        AudioManager.Instance.DOPlaySfx(Audios.CookieClick);
     }
 }

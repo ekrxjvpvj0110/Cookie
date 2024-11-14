@@ -1,9 +1,12 @@
+using System.Collections;
 using UnityEngine;
 
 
 public class DonutHandle : MonoBehaviour
 {
     private Animator _animator;
+    private Coroutine _coroutine;
+    private float _waitTime= 0.21f;
     
     [Header("Donut Information")]
     public DonutSo donutInfo;
@@ -34,14 +37,32 @@ public class DonutHandle : MonoBehaviour
         
         if (_currentDonutHp <= 0)
         {
+            if (_coroutine != null)
+            {
+                StopCoroutine(_coroutine);
+            }
+            
             ObjectPool.Instance.GetDonutObject();
             StartAnimation("Destroy", true);
             _isDonutDestroyed = true;
         }
         else
         {
+            if (_coroutine != null)
+            {
+                StopCoroutine(_coroutine);
+            }
+
+            _coroutine = StartCoroutine(ResetClick());
             CheckBonusCoinCycle();
         }
+    }
+    
+    
+    private IEnumerator ResetClick()
+    {
+        yield return new WaitForSeconds(_waitTime);
+        StartAnimation("Click", false);
     }
 
 
@@ -60,6 +81,8 @@ public class DonutHandle : MonoBehaviour
         {
             ObjectPool.Instance.GetCoinObject();
         }
+        
+        AudioManager.Instance.DOPlaySfx(Audios.CoinDrop);
     }
 
 
@@ -80,10 +103,9 @@ public class DonutHandle : MonoBehaviour
     }
     
 
-    private void NotifyDestroyed() // 게임 매니저에 알려주어 새로운 도넛 생성
+    private void NotifyDestroyed() // 새로운 도넛 생성
     {
-        // 일정 시간 지난 후 새로운 도넛 생성
-        // 카운트 올려주기
+        GameManager.Instance.MakeDonut();
     }
     #endregion
 }

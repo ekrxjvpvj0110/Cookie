@@ -17,7 +17,9 @@ public class UIScorePresenter : MonoBehaviour
     public void AddScore()
     {
         _scoreModel.scoreQuantity++;
-
+        
+        AudioManager.Instance.DOPlaySfx(Audios.CoinPickUp);
+        
         UIRefresh();
     }
 

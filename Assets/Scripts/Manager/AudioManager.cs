@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 
@@ -15,18 +16,19 @@ public class AudioManager : ConvertSingleton<AudioManager>
     [SerializeField] private Sound<Audios>[] _AudiosSFX = null;
 
 
-    protected override void Awake()
+    private void Start()
     {
-        base.Awake();
-        DontDestroyOnLoad(gameObject);
+        for (int i = 0; i < _sfxPlayer.Length; i++)
+        {
+            _sfxPlayer[i].volume = 0.2f;
+        }
     }
-
 
     public void DOPlaySfx(Audios audiosEnum)
     {
         for (int i = 0; i < _AudiosSFX.Length; i++)
         {
-            if (_AudiosSFX.Equals(_AudiosSFX[i].name))
+            if (audiosEnum.Equals(_AudiosSFX[i].name))
             {
                 for (int j = 0; j < _sfxPlayer.Length; j++)
                 {

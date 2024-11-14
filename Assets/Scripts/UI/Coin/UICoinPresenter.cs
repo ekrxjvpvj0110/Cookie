@@ -18,6 +18,8 @@ public class UICoinPresenter : MonoBehaviour
     public void AddCoin()
     {
         _coinModel.coinQuantity++;
+        
+        AudioManager.Instance.DOPlaySfx(Audios.CoinPickUp);
 
         UIRefresh();
     }
